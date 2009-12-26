@@ -1,0 +1,15 @@
+{
+  "name": "orderly",
+  "author": "Zach Carter",
+  "email": "zach@carter.name",
+  "keywords": [
+      "orderly",
+      "jsonschema",
+      "json",
+      "parser",
+      "compiler"
+  ],
+  "githubName": "orderly.js",
+  "type": "zip",
+  "location": "http://github.com/zaach/orderly.js/zipball/master"
+}

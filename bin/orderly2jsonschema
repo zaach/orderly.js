@@ -1,0 +1,3 @@
+#!/usr/bin/env narwhal
+
+require('orderly').main(system.args);

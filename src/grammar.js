@@ -1,3 +1,6 @@
+// Generates parse.js
+// $ narwhal src/grammar.js lib/orderly/parse.js
+
 var Parser = require("jison").Parser;
 var system = require("system");
 var fs = require("file");
@@ -16,8 +19,8 @@ exports.grammar = {
         },
         "rules": [
             ["\\s+", "/* skip whitespace */"],
-            ["//[^\n]*", "/* skip comment */"],
-            ["#[^\n]*", "/* skip comment */"],
+            ["//[^\\n]*", "/* skip comment */"],
+            ["#[^\\n]*", "/* skip comment */"],
             [";", "return ';'"],
             [",", "return ','"],
             ["\\{", "return '{'"],
@@ -52,72 +55,75 @@ exports.grammar = {
     "tokens": "STRING_LIT NUMBER_LIT PROPERTY STRING NUMBER OBJECT ANY ARRAY BOOLEAN UNION INTEGER REGEX ? * = { } [ ] , : ; ` < > TRUE FALSE NULL",
 
     "bnf": {
-        "orderly_schema": [ "named_entry ;",
-                            "named_entry",
-                            "unnamed_entry ;",
-                            "unnamed_entry" ],
+        "orderly_schema": [[ "unnamed_entry ;", "return $1;" ],
+                           [ "unnamed_entry",   "return $1;" ]],
 
-        "named_entries": [ "named_entry ; named_entries",
-                           "named_entry",
-                           "" ],
+        "named_entries": [[ "named_entry ; named_entries", "$$ = $3; $$.unshift($1);" ],
+                          [ "named_entry",                 "$$ = [$1];" ],
+                          [ "",                            "$$ = [];" ]],
 
-        "unnamed_entries": [ "unnamed_entry ; unnamed_entries",
-                             "unnamed_entry",
-                             "" ],
+        "unnamed_entries": [[ "unnamed_entry ; unnamed_entries", "$$ = $3; $3.unshift($1);" ],
+                            [ "unnamed_entry",                   "$$ = [$1];" ],
+                            [ "",                                "$$ = [];" ]],
 
-        "named_entry": [ "definition_prefix property_name definition_suffix",
-                         "string_prefix property_name string_suffix" ],
+        "named_entry": [[ "definition_prefix property_name definition_suffix", "$$ = [$2, $1]; Type.addOptionals($1, $3);" ],
+                        [ "string_prefix property_name string_suffix",         "$$ = [$2, $1]; Type.addOptionals($1, $3);" ]],
 
-        "unnamed_entry": [ "definition_prefix definition_suffix",
-                           "string_prefix string_suffix" ],
+        "unnamed_entry": [[ "definition_prefix definition_suffix", "$$ = $1; Type.addOptionals($$, $2);" ],
+                          [ "string_prefix string_suffix",         "$$ = $1; Type.addOptionals($$, $2);" ]],
 
-        "definition_prefix": [ "INTEGER optional_range",
-                               "NUMBER optional_range",
-                               "BOOLEAN",
-                               "NULL",
-                               "ANY",
-                               "ARRAY { unnamed_entries } optional_additional_marker optional_range",
-                               "ARRAY [ unnamed_entry ] optional_range",
-                               "OBJECT { named_entries } optional_additional_marker",
-                               "UNION { unnamed_entries }" ],
+        "definition_prefix": [[ "INTEGER optional_range",    "$$ = new Type('integer', $2);" ],
+                              [ "NUMBER optional_range",     "$$ = new Type('number', $2);" ],
+                              [ "BOOLEAN",                   "$$ = new Type('boolean');" ],
+                              [ "NULL",                      "$$ = new Type('null');" ],
+                              [ "ANY",                       "$$ = new Type('any');" ],
+                              [ "ARRAY { unnamed_entries } optional_additional_marker optional_range",
+                                                             "$$ = new Type('array', $6, $3, $5);" ],
+                              [ "ARRAY [ unnamed_entry ] optional_range",
+                                                             "$$ = new Type('array', $5, $3);" ],
+                              [ "OBJECT { named_entries } optional_additional_marker",
+                                                             "$$ = new Type('object', null, $3, $5);" ],
+                              [ "UNION { unnamed_entries }", "$$ = new Type($3);" ]],
 
-        "string_prefix": [ "STRING optional_range" ],
+        "string_prefix": [[ "STRING optional_range", "$$ = new Type('string', $2);" ]],
 
-        "string_suffix": [ "optional_perl_regex definition_suffix" ],
+        "string_suffix": [[ "optional_perl_regex definition_suffix", "$$ = $2; $$.pattern = $1;" ]],
 
-        "definition_suffix": [ "optional_enum_values optional_default_value optional_requires optional_optional_marker optional_extra_properties" ],
+        "definition_suffix": [[ "optional_enum_values optional_default_value optional_requires optional_optional_marker optional_extra_properties",
+                                    "$$ = {enum: $1, defvalue: $2, requires: $3, optional: $4, extras: $5};" ]],
 
-        "csv_property_names": [ "property_name , csv_property_names",
-                                "property_name" ],
+        "csv_property_names": [[ "csv_property_names , property_name", "$$ = $1; $$.push($3);" ],
+                               [ "property_name",                      "$$ = [$1];" ]],
 
-        "optional_extra_properties": [ "` JSONObject `",
-                                       "" ],
+        "optional_extra_properties": [[ "` JSONObject `", "$$ = $2;" ],
+                                      [ "",               "$$ = null;" ]],
 
-        "optional_requires": [ "< csv_property_names >",
-                               "" ],
+        "optional_requires": [[ "< csv_property_names >", "$$ = $2;" ],
+                              [ "",                       "$$ = null;" ]],
 
-        "optional_optional_marker": [ "?",
-                                      "" ],
+        "optional_optional_marker": [[ "?", "$$ = true;" ],
+                                     [ "",  "$$ = null;" ]],
 
-        "optional_additional_marker": [ "*",
-                                        "" ],
+        "optional_additional_marker": [[ "*", "$$ = true;" ],
+                                       [ "",  "$$ = null;" ]],
 
-        "optional_enum_values": [ "JSONArray",
-                                  "" ],
+        "optional_enum_values": [[ "JSONArray", "$$ = $1;" ],
+                                 [ "",          "$$ = null;" ]],
 
-        "optional_default_value": [ "= JSONValue",
-                                    "" ],
+        "optional_default_value": [[ "= JSONValue", "$$ = $2;" ],
+                                   [ "",            "$$ = yy.NOVALUE;" ]],
 
-        "optional_range": [ "{ JSONNumber , JSONNumber }",
-                            "{ JSONNumber , }",
-                            "{ , }",
-                            "" ],
+        "optional_range": [[ "{ JSONNumber , JSONNumber }", "$$ = [$2, $4];" ],
+                           [ "{ JSONNumber , }",            "$$ = [$2, null];" ],
+                           [ "{ , JSONNumber }",            "$$ = [null, $3];" ],
+                           [ "{ , }",                       "$$ = null;" ],
+                           [ "",                            "$$ = null;" ]],
 
-        "property_name": [ "JSONString",
-                           "PROPERTY" ],
+        "property_name": [[ "JSONString", "$$ = $1;" ],
+                          [ "PROPERTY",   "$$ = yytext;" ]],
 
-        "optional_perl_regex": [ "REGEX",
-                                 "" ],
+        "optional_perl_regex": [[ "REGEX", "$$ = yytext.substr(1, yytext.length-2);" ],
+                                [ "",      "$$ = null;" ]],
 
 
         "JSONString": [[ "STRING_LIT", "$$ = yytext;" ]],
@@ -126,7 +132,7 @@ exports.grammar = {
 
         "JSONNullLiteral": [[ "NULL", "$$ = null;" ]],
 
-        "JSONBooleanLiteral": [[ "TRUE", "$$ = true;" ],
+        "JSONBooleanLiteral": [[ "TRUE",  "$$ = true;" ],
                                [ "FALSE", "$$ = false;" ]],
 
 
@@ -153,17 +159,19 @@ exports.grammar = {
         "JSONElementList": [[ "JSONValue", "$$ = [$1];" ],
                             [ "JSONElementList , JSONValue", "$$ = $1; $1.push($3);" ]]
 
-    }
+    },
+
+    "actionInclude": "var Type = yy.Type;"
 };
 
-var options = {type: "slr", moduleType: "commonjs", moduleName: "orderly"};
+var options = {type: "slr", moduleType: "commonjs", moduleName: "parse"};
 
 exports.main = function main (args) {
     var cwd = fs.path(fs.cwd()),
-        parser = new Parser(exports.grammar, options);
-        //code = new Parser(exports.grammar, options).generate(),
-        //stream = cwd.join(options.moduleName+".js").open("w");
-    //stream.print(code).close();
+        parser = new Parser(exports.grammar, options),
+        source = parser.generate(),
+        stream = cwd.join(args[1] || options.moduleName+".js").open("w");
+    stream.print(source).close();
 };
 
 if (require.main === module.id)
