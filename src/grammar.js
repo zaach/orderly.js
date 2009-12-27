@@ -19,7 +19,7 @@ exports.grammar = {
         },
         "rules": [
             ["\\s+", "/* skip whitespace */"],
-            ["//[^\\n]*", "/* skip comment */"],
+            ["\\/\\/[^\\n]*", "/* skip comment */"],
             ["#[^\\n]*", "/* skip comment */"],
             [";", "return ';'"],
             [",", "return ','"],
@@ -48,7 +48,7 @@ exports.grammar = {
             ["\\?", "return '?'"],
             ["\\*", "return '*'"],
             ["=", "return '='"],
-            ["\/(?:[^/]|\/)*\/", "return 'REGEX';"]
+            ["\\/(?:[^/]|\\/)*\\/", "return 'REGEX';"]
         ]
     },
 
@@ -90,7 +90,7 @@ exports.grammar = {
         "string_suffix": [[ "optional_perl_regex definition_suffix", "$$ = $2; $$.pattern = $1;" ]],
 
         "definition_suffix": [[ "optional_enum_values optional_default_value optional_requires optional_optional_marker optional_extra_properties",
-                                    "$$ = {enum: $1, defvalue: $2, requires: $3, optional: $4, extras: $5};" ]],
+                                    "$$ = {'enums': $1, 'defaultv': $2, 'requires': $3, 'optional': $4, 'extras': $5};" ]],
 
         "csv_property_names": [[ "csv_property_names , property_name", "$$ = $1; $$.push($3);" ],
                                [ "property_name",                      "$$ = [$1];" ]],

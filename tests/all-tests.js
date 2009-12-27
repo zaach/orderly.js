@@ -7,6 +7,14 @@ var fs = require("file"),
 // set parser's shared scope
 parser.yy = require("../lib/orderly/scope");
 
+exports["test empty object"] = function () {
+    var orderly = "object { };";
+    assert.deepEqual(parser.parse(orderly), {"type": "object"});
+};
+exports["test empty array"] = function () {
+    var orderly = "array { };";
+    assert.deepEqual(parser.parse(orderly), {"type": "array"});
+};
 exports["test // comment"] = function () {
     var orderly = "// comment \nobject { string foo };";
     assert.ok(parser.parse(orderly));
