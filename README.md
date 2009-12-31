@@ -18,6 +18,20 @@ Usage
     print(JSON.stringify(jsonSchemaObject));
 
 
+Usage from a web page
+-----
+The minified, web version of orderly.js is found in `web/orderly.js`. Just include it in your web page to use the `orderly` object:
+
+    <script src="orderly.js"></script>
+    <script>
+        var orderlySource = "array {};";
+        var jsonSchemaSource = orderly.compile(orderlySource);
+        var jsonSchemaObject = orderly.parse(orderlySource);
+    </script>
+
+Orderly.js includes it's own JSON parser, so there are no dependencies.
+
+
 License
 -------
 
