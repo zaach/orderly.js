@@ -22,6 +22,7 @@ Usage from a web page
 -----
 The minified, web version of orderly.js is found in `web/orderly.js`. Just include it in your web page to use the `orderly` object:
 
+    <script src="json2.js"></script>
     <script src="orderly.js"></script>
     <script>
         var orderlySource = "array {};";
@@ -29,7 +30,7 @@ The minified, web version of orderly.js is found in `web/orderly.js`. Just inclu
         var jsonSchemaObject = orderly.parse(orderlySource);
     </script>
 
-Orderly.js includes it's own JSON parser, so there are no dependencies.
+Orderly.js includes it's own JSON parser, but you'll need a JSON stringifier such as [json2.js](http://json.org/json2.js) in order to compile to JSON Schema.
 
 
 License
