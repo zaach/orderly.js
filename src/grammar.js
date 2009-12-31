@@ -164,7 +164,7 @@ exports.grammar = {
     "actionInclude": "var Type = yy.Type;"
 };
 
-var options = {type: "slr", moduleType: "commonjs", moduleName: "parse"};
+var options = {type: "slr", moduleType: "commonjs", moduleName: "parser"};
 
 exports.main = function main (args) {
     var cwd = fs.path(fs.cwd()),
