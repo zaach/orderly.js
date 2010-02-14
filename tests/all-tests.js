@@ -48,5 +48,5 @@ npath.list().forEach(function (file, i, e) {
     }
 });
 
-if (require.main === module.id)
+if (require.main === module)
     require("os").exit(require("test").run(exports)); 

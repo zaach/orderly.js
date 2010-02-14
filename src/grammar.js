@@ -174,6 +174,6 @@ exports.main = function main (args) {
     stream.print(source).close();
 };
 
-if (require.main === module.id)
+if (require.main === module)
     exports.main(system.args);
 
