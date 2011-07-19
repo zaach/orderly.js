@@ -244,6 +244,7 @@ parse: function parse(input) {
         if (typeof token !== "number") {
             token = self.symbols_[token];
         }
+        console.log(token);
         return token;
     }
 

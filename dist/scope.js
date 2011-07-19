@@ -17,14 +17,18 @@ scope.Type.prototype = {
         this.json = {};
         this.json.type = type;
 
+        if (type instanceof Array && type.length < 2) {
+            throw new Error("must have at least two members in a union");
+        }
+
         if (range) {
             this.addRange(range);
         }
         if (entries) {
             this.addEntries(entries);
-        }
-        if (additional) {
-            this.json.additionalProperties = true;
+            if (!additional && (entries.length || entries.type)) {
+                this.json.additionalProperties = false;
+            }
         }
         return this.json;
     },

@@ -1,11 +1,12 @@
 #!/usr/bin/env narwhal
 
-var fs = require("file"),
+var fs = require("fs"),
+    path = require("path"),
     assert = require("assert"),
-    parser = require("../lib/orderly/parse").parser;
+    parser = require("../dist/parser").parser;
 
 // set parser's shared scope
-parser.yy = require("../lib/orderly/scope");
+parser.yy = require("../dist/scope");
 
 exports["test empty object"] = function () {
     var orderly = "object { };";
@@ -25,28 +26,28 @@ exports["test # comment"] = function () {
 };
 
 // positive test cases
-var path = fs.path(fs.join(fs.dirname(module.id), "positive_cases"));
-path.list().forEach(function (file, i, e) {
-    var f = fs.path(path.join(file));
-    if (f.extension() === ".orderly") {
-        exports["test "+f.basename(".orderly")] = function () {
-            var parsed = parser.parse(f.read({charset: "utf-8"}));
-            var schema = fs.path(path.join(f.basename(".orderly")+".jsonschema")).read({charset: "utf-8"});
+var posdir = path.join(__dirname, "positive_cases");
+var ppath = fs.readdirSync(posdir);
+ppath.forEach(function (f, i, e) {
+    if (f.match(/orderly$/)) {
+        exports["test positive_cases/"+f] = function () {
+            var parsed = parser.parse(fs.readFileSync(path.join(posdir, f),"utf8"));
+            var schema = fs.readFileSync(path.join(posdir, f.replace(/orderly$/, 'jsonschema')), "utf8");
             assert.deepEqual(parsed, JSON.parse(schema));
         };
     }
 });
 
 // negative test cases
-var npath = fs.path(fs.join(fs.dirname(module.id), "negative_cases"));
-npath.list().forEach(function (file, i, e) {
-    var f = fs.path(npath.join(file));
-    if (f.extension() === ".orderly") {
-        exports["test "+f.basename(".orderly")] = function () {
-            assert["throws"](function () { parser.parse(f.read({charset: "utf-8"})); });
+var negdir = path.join(__dirname, "negative_cases");
+var npath = fs.readdirSync(negdir);
+npath.forEach(function (f, i, e) {
+    if (f.match(/orderly$/)) {
+        exports["test negative_cases/"+f] = function () {
+            assert["throws"](function () { parser.parse(fs.readFileSync(path.join(negdir, f), "utf8")); });
         };
     }
 });
 
 if (require.main === module)
-    require("os").exit(require("test").run(exports)); 
+    require("test").run(exports);

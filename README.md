@@ -5,7 +5,13 @@ A CommonJS module that compiles Orderly to JSONSchema
 ------------------------------------------------------
 > [Orderly](http://orderly-json.org/) is a textual format for describing JSON. Orderly can be compiled into JSONSchema. It is designed to be easy to read and write.
 
-Usage
+Installation
+----
+Depends on Node.js and npm:
+
+    npm install orderly -g
+
+Module Usage
 -----
     var orderly = require("orderly");
 
@@ -17,10 +23,20 @@ Usage
 
     print(JSON.stringify(jsonSchemaObject));
 
+Command-line Usage
+------
+    usage: orderly <file> [options]
 
-Usage from a web page
+    file     file to parse; otherwise uses stdin
+
+    options:
+       -v, --version                 print version and exit
+       -o FILE, --output-file FILE   write output to the file
+       -t CHAR, --indent CHAR        character(s) to use for indentation
+
+Standalone Usage
 -----
-The minified, web version of orderly.js is found in `web/orderly.js`. Just include it in your web page to use the `orderly` object:
+The minified, standalone version of orderly.js is found in `web/orderly.js`. Just include it in your web page to use the `orderly` object:
 
     <script src="json2.js"></script>
     <script src="orderly.js"></script>
@@ -30,11 +46,11 @@ The minified, web version of orderly.js is found in `web/orderly.js`. Just inclu
         var jsonSchemaObject = orderly.parse(orderlySource);
     </script>
 
-Orderly.js includes it's own JSON parser, but you'll need a JSON stringifier such as [json2.js](http://json.org/json2.js) in order to compile to JSON Schema.
-
+Orderly.js includes it's own JSON parser, but older browsers will need a JSON stringifier such as [json2.js](http://json.org/json2.js) in order to compile to JSONSchema.
 
 License
 -------
+MIT X License
 
 > Copyright (c) 2009 Zachary Carter
 > 

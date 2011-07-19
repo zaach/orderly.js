@@ -1,15 +1,39 @@
 {
+  "author": "Zach Carter <zcarter@cse.usf.edu> (http://zaa.ch)",
   "name": "orderly",
-  "author": "Zach Carter",
-  "email": "zach@carter.name",
+  "description": "Translates Orderly to JSON Schema",
   "keywords": [
-      "orderly",
-      "jsonschema",
-      "json",
-      "parser",
-      "compiler"
+    "json",
+    "orderly",
+    "jsonschema",
+    "parser"
   ],
-  "githubName": "orderly.js",
-  "type": "zip",
-  "location": "http://github.com/zaach/orderly.js/zipball/master"
+  "version": "1.0.0",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zaach/orderly.js.git"
+  },
+  "bugs": {
+    "url": "http://github.com/zaach/orderly.js/issues"
+  },
+  "main": "dist/orderly.js",
+  "bin": {
+    "orderly": "dist/cli.js"
+  },
+  "engines": {
+    "node": "0.4 || 0.5"
+  },
+  "dependencies": {
+    "nomnom": ">= 0.4.3"
+  },
+  "devDependencies": {
+    "test": "*",
+    "jison": "*",
+    "uglify-js": "*"
+  },
+  "scripts": {
+    "test": "node tests/all-tests.js"
+  },
+  "homepage": "http://zaach.github.com/orderly.js/"
 }
