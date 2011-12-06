@@ -22,7 +22,7 @@
     "orderly": "dist/cli.js"
   },
   "engines": {
-    "node": "0.4 || 0.5"
+    "node": ">= 0.4"
   },
   "dependencies": {
     "nomnom": ">= 0.4.3"
