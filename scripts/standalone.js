@@ -27,7 +27,7 @@ function generate (path) {
     var script = bundler.bundle(normalizeModules(modules, path));
 
     var out = "var orderly = (function() {\n" + script + ";\nreturn require('orderly');\n})();";
-    require("sys").puts(out);
+    require('util').puts(out);
 }
 
 var cwd = process.cwd();
