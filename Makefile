@@ -12,4 +12,7 @@ test: move dist
 
 standalone: move dist
 	node scripts/standalone.js | uglifyjs > web/orderly.js
+	cp web/orderly.js ../orderly-pages/orderly.js
+	cp web/orderly.html ../orderly-pages/index.html
+	cd ../orderly-pages && git commit -a -m 'update site' && git push origin
 
