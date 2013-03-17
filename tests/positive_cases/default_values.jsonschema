@@ -1,22 +1,28 @@
 {
   "type": "object",
+  "required": true,
   "properties": {
     "mood": {
       "type": "string",
+      "required": true,
       "default": "happy"
     },
     "mood": {
       "type": "integer",
+      "required": true,
       "default": 47
     },
     "mood": {
       "type": "number",
+      "required": true,
       "default": 42.01
     },
     "listOfStuff": {
       "type": "array",
+      "required": true,
       "items": {
-        "type": "string"
+        "type": "string",
+        "required": true
       },
       "default": [
         "a",
@@ -27,9 +33,11 @@
     },
     "obj": {
       "type": "object",
+      "required": true,
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "required": true
         }
       },
       "default": {
@@ -38,14 +46,17 @@
     },
     "stayOrGo": {
       "type": "boolean",
+      "required": true,
       "default": true
     },
     "goOrStay": {
       "type": "boolean",
+      "required": true,
       "default": false
     },
     "likeAir": {
       "type": "null",
+      "required": true,
       "default": null
     }
   }

@@ -1,27 +1,34 @@
 {
   "type": "object",
+  "required": true,
   "properties": {
     "simpleTypedArrayOfIntegers": {
       "type": "array",
+      "required": true,
       "items": {
-        "type": "integer"
+        "type": "integer",
+        "required": true
       },
-      "additionalProperties": false
+      "additionalItems": false
     },
     "tupleTypedArrayOfOneInteger": {
       "type": "array",
+      "required": true,
       "items": [
         {
-          "type": "integer"
+          "type": "integer",
+          "required": true
         }
       ],
-      "additionalProperties": false
+      "additionalItems": false
     },
     "tupleTypedArrayOfOneIntegerFollowedByAnything": {
       "type": "array",
+      "required": true,
       "items": [
         {
-          "type": "integer"
+          "type": "integer",
+          "required": true
         }
       ]
     }

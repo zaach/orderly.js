@@ -2,31 +2,41 @@
   "type": "object",
   "properties": {
     "string": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "number": {
-      "type": "number"
+      "type": "number",
+      "required": true
     },
     "integer": {
-      "type": "integer"
+      "type": "integer",
+      "required": true
     },
     "boolean": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true
     },
     "object": {
-      "type": "object"
+      "type": "object",
+      "required": true
     },
     "array": {
       "type": "array",
+      "required": true,
       "items": {
-        "type": "any"
+        "type": "any",
+        "required": true
       }
     },
     "null": {
-      "type": "null"
+      "type": "null",
+      "required": true
     },
     "any": {
-      "type": "any"
+      "type": "any",
+      "required": true
     }
-  }
+  },
+  "required": true
 }

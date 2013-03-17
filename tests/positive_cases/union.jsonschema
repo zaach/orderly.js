@@ -2,6 +2,7 @@
   "type": [
     {
       "type": "string",
+      "required": true,
       "enum": [
         "Sr.",
         "Jr.",
@@ -9,7 +10,9 @@
       ]
     },
     {
-      "type": "null"
+      "type": "null",
+      "required": true
     }
-  ]
+  ],
+  "required": true
 }

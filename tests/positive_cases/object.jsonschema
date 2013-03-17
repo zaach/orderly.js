@@ -1,11 +1,14 @@
 {
   "type": "object",
+  "required": true,
   "properties": {
     "first": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "last": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }

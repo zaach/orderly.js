@@ -3,7 +3,7 @@
 if (typeof require !== 'undefined') {
     var scope = exports;
 } else {
-    var scope = parser.yy
+    var scope = parser.yy;
 }
 
 scope.NOVALUE = {};
@@ -27,7 +27,11 @@ scope.Type.prototype = {
         if (entries) {
             this.addEntries(entries);
             if (!additional && (entries.length || entries.type)) {
-                this.json.additionalProperties = false;
+                if (type === 'array') {
+                    this.json.additionalItems = false;
+                } else {
+                    this.json.additionalProperties = false;
+                }
             }
         }
         return this.json;
@@ -44,8 +48,8 @@ scope.Type.prototype = {
     },
     addRange: function (tuple) {
         var suf = this.json.type === 'array' ? 'Items' : this.json.type === 'string' ? 'Length' : 'imum';
-        if (tuple[0] !== null) this.json['min'+suf] = tuple[0];
-        if (tuple[1] !== null) this.json['max'+suf] = tuple[1];
+        if (tuple[0] !== null) this.json['min' + suf] = tuple[0];
+        if (tuple[1] !== null) this.json['max' + suf] = tuple[1];
     }
 };
 
@@ -55,14 +59,14 @@ scope.Type.addOptionals = function (type, o) {
         for (prop in o.extras) if (o.extras.hasOwnProperty(prop))
             type[prop] = o.extras[prop];
     }
-    if (o.optional) {
-        type.optional = true;
+    if (!o.optional) {
+        type.required = true;
     }
     if (o.enums) {
         type["enum"] = o.enums;
     }
-    if (o.requires) {
-        type.requires = o.requires.length > 1 ? o.requires : o.requires[0];
+    if (o.dependencies) {
+        type.dependencies = o.dependencies.length > 1 ? o.dependencies : o.dependencies[0];
     }
     if (o.defaultv !== scope.NOVALUE) {
         type["default"] = o.defaultv;
