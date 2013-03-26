@@ -1,9 +1,9 @@
 {
   "type": "object",
+  "required": true,
   "properties": {
     "foo": {
-      "type": "string",
-      "optional": true
+      "type": "string"
     }
   },
   "additionalProperties": false

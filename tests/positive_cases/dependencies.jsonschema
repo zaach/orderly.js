@@ -2,27 +2,24 @@
   "type": "object",
   "properties": {
     "foo": {
-      "type": "integer",
-      "optional": true
+      "type": "integer"
     },
     "bar": {
-      "type": "integer",
-      "optional": true
+      "type": "integer"
     },
     "baz": {
       "type": "integer",
-      "optional": true,
-      "requires": "foo"
+      "dependencies": "foo"
     },
     "bing": {
       "type": "integer",
-      "optional": true,
-      "requires": [
+      "dependencies": [
         "foo",
         "bar",
         "baz"
       ]
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+  "required": true
 }

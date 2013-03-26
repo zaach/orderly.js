@@ -1,7 +1,9 @@
 {
   "type": "array",
+  "required": true,
   "items": {
-    "type": "any"
+    "type": "any",
+    "required": true
   },
-  "additionalProperties": false
+  "additionalItems": false
 }

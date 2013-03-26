@@ -1,4 +1,5 @@
 {
   "type": "string",
+  "required": true,
   "format": "orderly"
 }

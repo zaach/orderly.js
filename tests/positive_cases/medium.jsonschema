@@ -1,19 +1,24 @@
 {
   "type": "object",
+  "required": true,
   "properties": {
     "age": {
       "type": "integer",
+      "required": true,
       "minimum": 0,
       "maximum": 200
     },
     "name": {
       "type": "object",
+      "required": true,
       "properties": {
         "first": {
-          "type": "string"
+          "type": "string",
+          "required": true
         },
         "last": {
-          "type": "string"
+          "type": "string",
+          "required": true
         }
       }
     }

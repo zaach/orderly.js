@@ -64,7 +64,7 @@ named_entries
         {$$ = $3; $$.unshift($1);}
     | named_entry
         {$$ = [$1];}
-    | 
+    |
         {$$ = [];}
     ;
 
@@ -73,7 +73,7 @@ unnamed_entries
         {$$ = $3; $3.unshift($1);}
     | unnamed_entry
         {$$ = [$1];}
-    | 
+    |
         {$$ = [];}
     ;
 
@@ -123,8 +123,8 @@ string_suffix
     ;
 
 definition_suffix
-    : optional_enum_values optional_default_value optional_requires optional_optional_marker optional_extra_properties
-        {$$ = {'enums': $1, 'defaultv': $2, 'requires': $3, 'optional': $4, 'extras': $5};}
+    : optional_enum_values optional_default_value optional_dependencies optional_optional_marker optional_extra_properties
+        {$$ = {'enums': $1, 'defaultv': $2, 'dependencies': $3, 'optional': $4, 'extras': $5};}
     ;
 
 csv_property_names
@@ -137,41 +137,41 @@ csv_property_names
 optional_extra_properties
     : '`' JSONObject '`'
         {$$ = $2;}
-    | 
+    |
         {$$ = null;}
     ;
 
-optional_requires
+optional_dependencies
     : '<' csv_property_names '>'
         {$$ = $2;}
-    | 
+    |
         {$$ = null;}
     ;
 
 optional_optional_marker
     : '?'
         {$$ = true;}
-    | 
+    |
         {$$ = null;}
     ;
 
 optional_additional_marker
     : '*'
         {$$ = true;}
-    | 
+    |
         {$$ = null;}
     ;
 
 optional_enum_values
     : JSONArray
-    | 
+    |
         {$$ = null;}
     ;
 
 optional_default_value
     : '=' JSONValue
         {$$ = $2;}
-    | 
+    |
         {$$ = yy.NOVALUE;}
     ;
 
@@ -184,7 +184,7 @@ optional_range
         {$$ = [null, $3];}
     | '{' ',' '}'
         {$$ = null;}
-    | 
+    |
         {$$ = null;}
     ;
 
@@ -197,7 +197,7 @@ property_name
 optional_perl_regex
     : REGEX
         {$$ = yytext.substr(1, yytext.length-2);}
-    | 
+    |
         {$$ = null;}
     ;
 

@@ -10,11 +10,11 @@ parser.yy = require("../dist/scope");
 
 exports["test empty object"] = function () {
     var orderly = "object { };";
-    assert.deepEqual(parser.parse(orderly), {"type": "object"});
+    assert.deepEqual(parser.parse(orderly), {"type": "object", "required": true});
 };
 exports["test empty array"] = function () {
     var orderly = "array { };";
-    assert.deepEqual(parser.parse(orderly), {"type": "array"});
+    assert.deepEqual(parser.parse(orderly), {"type": "array", "required": true});
 };
 exports["test // comment"] = function () {
     var orderly = "// comment \nobject { string foo };";
